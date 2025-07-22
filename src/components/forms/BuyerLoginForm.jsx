@@ -41,7 +41,7 @@ export default function BuyerLoginForm() {
         alert('Login failed. Please try again.');
       }
     } else {
-      setShowRegister(true);
+      navigate('/buyer/register-buyer', {state:{mobile}});
     }
   };
 

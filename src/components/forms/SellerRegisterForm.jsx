@@ -1,18 +1,24 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 
-export default function SellerRegisterForm({ mobile }) {
-  const [form, setForm] = useState({ name: '', email: '', city: '', state: '' });
+export default function SellerRegisterForm() {
+  const location = useLocation();
   const navigate = useNavigate();
+  const mobile = location.state?.mobile || '';
+  const [form, setForm] = useState({ name: '', email: '', city: '', state: '',});
 
-  const handleSubmit = async () => {
+  const handleRegister = async () => {
     const res = await fetch('http://localhost:8080/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mobileNumber: mobile, ...form }),
+      body: JSON.stringify({ mobileNumber: mobile,...form, }),
     });
     if (res.ok) {
-      navigate('/seller/dashboard');
+      const data = await res.json();
+      localStorage.setItem('sellerUser', JSON.stringify(data));
+      navigate('/seller/dashboard'); 
+    } else {
+      alert('Registration failed. Please try again.');
     }
   };
 
@@ -24,20 +30,38 @@ export default function SellerRegisterForm({ mobile }) {
           Join our trusted network of sellers. Provide your details to get started.
         </p>
 
-        {['name', 'email', 'city', 'state'].map((field) => (
-          <input
-            key={field}
-            type="text"
-            className="w-full p-3 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none mb-4"
-            placeholder={field[0].toUpperCase() + field.slice(1)}
-            value={form[field]}
-            onChange={(e) => setForm({ ...form, [field]: e.target.value })}
-          />
-        ))}
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          className="w-full p-3 mb-4 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none"
+        />
+        <input
+          type="email"
+          placeholder="Email Address"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          className="w-full p-3 mb-4 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none"
+        />
+        <input
+          type="text"
+          placeholder="City"
+          value={form.city}
+          onChange={(e) => setForm({ ...form, city: e.target.value })}
+          className="w-full p-3 mb-4 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none"
+        />
+        <input
+          type="text"
+          placeholder="State"
+          value={form.state}
+          onChange={(e) => setForm({ ...form, state: e.target.value })}
+          className="w-full p-3 mb-4 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none"
+        />
 
         <button
           className="w-full bg-blueAccent hover:bg-blue-700 transition-colors text-white font-semibold py-3 rounded-lg"
-          onClick={handleSubmit}
+          onClick={handleRegister}
         >
           Register
         </button>

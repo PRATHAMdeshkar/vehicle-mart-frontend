@@ -8,6 +8,7 @@ import VehicleUploadForm from './components/forms/VehicleUploadForm';
 import Layout from './components/layout/Layout';
 import './index.css';
 import BuyerRegisterForm from './components/forms/BuyerRegisterForm';
+import SellerRegisterForm from './components/forms/SellerRegisterForm';
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
           <Route path='buyer/dashboard' element={<BuyerDashboard />} />
           <Route path="/seller/dashboard" element={<SellerDashboard />} />
           <Route path="/seller/upload-vehicle" element={<VehicleUploadForm />} />
-          <Route path="buyer/register-buyer" element={< BuyerRegisterForm/>} />
+          <Route path="buyer/register-buyer" element={<BuyerRegisterForm/>} />
+          <Route path="seller/register-seller" element={<SellerRegisterForm />} />
         </Route>
       </Routes>
     </BrowserRouter>

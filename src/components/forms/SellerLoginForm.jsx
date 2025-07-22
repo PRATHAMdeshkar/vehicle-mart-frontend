@@ -10,7 +10,7 @@ export default function SellerLoginPage() {
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
-    const phoneNumber = parsePhoneNumberFromString(mobile, 'IN'); // IN = India
+    const phoneNumber = parsePhoneNumberFromString(mobile, 'IN'); 
 
     if (!phoneNumber || !phoneNumber.isValid()) {
       setError('Please enter a valid Indian mobile number');
@@ -42,7 +42,7 @@ export default function SellerLoginPage() {
       alert("Login failed. Please try again.");
     }
   } else {
-    setShowRegister(true);
+    navigate('/seller/register-seller', { state: { mobile } });
   }
 };
 
