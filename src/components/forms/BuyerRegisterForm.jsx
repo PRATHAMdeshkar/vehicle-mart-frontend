@@ -1,11 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { State, City} from 'country-state-city';
 
 export default function BuyerRegisterForm() {
   const location = useLocation();
   const mobile = location.state?.mobile || '';
   const [form, setForm] = useState({ name: '', email: '', city: '', state: '' });
   const navigate = useNavigate();
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    const indiaStates = State.getStatesOfCountry('IN');
+    setStates(indiaStates);
+  }, []);
+
+  useEffect(() => {
+    if (form.state) {
+      const selectedStateCities = City.getCitiesOfState('IN', form.state);
+      setCities(selectedStateCities);
+    } else {
+      setCities([]);
+    }
+  }, [form.state]);  
 
   const handleRegister = async () => {
     const res = await fetch('http://localhost:8080/api/auth/register-buyer', {
@@ -45,20 +62,31 @@ export default function BuyerRegisterForm() {
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           className="w-full p-3 mb-4 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none"
         />
-        <input
-          type="text"
-          placeholder="City"
+        <select
+          value={form.state}
+          onChange={(e) => setForm({ ...form, state: e.target.value, city: '' })}
+          className="w-full p-3 mb-4 rounded-md bg-darkGrey text-white focus:outline-none"
+        >
+          <option value="">Select State</option>
+          {states.map((state) => (
+            <option key={state.isoCode} value={state.isoCode}>
+              {state.name}
+            </option>
+          ))}
+        </select>
+        <select
           value={form.city}
           onChange={(e) => setForm({ ...form, city: e.target.value })}
-          className="w-full p-3 mb-4 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none"
-        />
-        <input
-          type="text"
-          placeholder="State"
-          value={form.state}
-          onChange={(e) => setForm({ ...form, state: e.target.value })}
-          className="w-full p-3 mb-4 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none"
-        />
+          disabled={!form.state}
+          className="w-full p-3 mb-4 rounded-md bg-darkGrey text-white focus:outline-none"
+        >
+          <option value="">Select City</option>
+          {cities.map((city) => (
+            <option key={city.name} value={city.name}>
+              {city.name}
+            </option>
+          ))}
+        </select>
 
         <button
           className="w-full bg-blueAccent hover:bg-blue-700 transition-colors text-white font-semibold py-3 rounded-lg"
