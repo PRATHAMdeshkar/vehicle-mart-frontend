@@ -25,6 +25,10 @@ export default function BuyerRegisterForm() {
   }, [form.state]);  
 
   const handleRegister = async () => {
+    const { name, email, state, city } = form;
+     if (!name || !email || !state || !city) {
+    alert('All fields are required');
+    return; }
     const res = await fetch('http://localhost:8080/api/auth/register-buyer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

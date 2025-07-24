@@ -52,6 +52,10 @@ export default function VehicleUploadForm() {
   };
 
   const handleSubmit = async (e) => {
+    const { brand, model, year, fuelType, transmissionType,vehicleType,numberOfOwners} = form;
+    if (!brand || !model || !year || !fuelType ||  !transmissionType || !vehicleType || !numberOfOwners) {
+    alert('All fields are required');
+    return; }
     e.preventDefault();
 
     const res = await fetch('http://localhost:8080/api/vehicle/upload', {
