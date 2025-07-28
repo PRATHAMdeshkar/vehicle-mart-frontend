@@ -74,15 +74,14 @@ const fetchVehicles = async (sellerId) => {
                 key={i}
                 className="bg-[#2E3944] rounded-lg p-4 shadow-md text-[#D3D9D4] hover:shadow-xl transition"
               >
-                <h3 className="text-xl font-bold text-[#124E66] mb-2">{v.brand} {v.model}</h3>
-                <h2>card start from here</h2>
+                <h3 className="text-2xl font-semibold text-white mb-3">{v.brand} {v.model}</h3>
                 <p>📅 Year: {v.year}</p>
                 <p>⛽ Fuel: {v.fuelType}</p>
                 <p>⚙️ Transmission: {v.transmissionType}</p>
                 <p>🚘 Type: {v.vehicleType}</p>
                 <p>📏 Mileage: {v.mileage} km</p>
                 <p>👥 Owners: {v.numberOfOwners}</p>
-              </div>
+                <p className="text-lg mt-2 font-semibold">💸 {v.price} INR</p>              </div>
             ))}
           </div>
         )}

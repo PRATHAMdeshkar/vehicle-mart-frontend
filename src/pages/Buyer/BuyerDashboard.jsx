@@ -75,7 +75,7 @@ export default function BuyerDashboard() {
                 key={v.id}
                 className="bg-[#2E3944] rounded-lg p-5 shadow-md text-[#D3D9D4] hover:shadow-xl transition"
               >
-                <h3 className="text-xl font-bold text-[#124E66] mb-2">
+                <h3 className="text-2xl font-semibold text-white mb-3">
                   {v.brand} {v.model}
                 </h3>
                 <p>📅 Year: {v.year}</p>
@@ -84,6 +84,7 @@ export default function BuyerDashboard() {
                 <p>🚘 Type: {v.vehicleType}</p>
                 <p>📏 Mileage: {v.mileage} km</p>
                 <p>👥 Owners: {v.numberOfOwners}</p>
+                <p className="text-lg mt-2 font-semibold">💸 {v.price} INR</p>
 
                 {visibleSellers.has(v.id) ? (
                   <div className="mt-4 p-3 rounded bg-[#1C1F24] text-[#BFD7EA]">

@@ -14,6 +14,7 @@ export default function VehicleUploadForm() {
     vehicleType: '',
     mileage: '',
     numberOfOwners: '',
+    price:'',
   });
 
  const brandModelMap = {
@@ -48,20 +49,28 @@ export default function VehicleUploadForm() {
   const vehicleTypes = ['2 Wheeler', '3 Wheeler', '4 Wheeler', 'Truck'];
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const {name,value} = e.target;
+    setForm({ ...form, [name]: value });
   };
 
   const handleSubmit = async (e) => {
-    const { brand, model, year, fuelType, transmissionType,vehicleType,numberOfOwners} = form;
-    if (!brand || !model || !year || !fuelType ||  !transmissionType || !vehicleType || !numberOfOwners) {
+    e.preventDefault();
+    const { brand, model, year, fuelType, transmissionType,vehicleType,numberOfOwners,price} = form;
+
+    if (!brand || !model || !year || !fuelType ||  !transmissionType || !vehicleType || !numberOfOwners || !price) {
     alert('All fields are required');
     return; }
-    e.preventDefault();
+
+    const formattedForm = {
+      ...form,
+      price: parseFloat(parseFloat(form.price).toFixed(2)),
+      sellerId: seller.id,
+    };
 
     const res = await fetch('http://localhost:8080/api/vehicle/upload', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, sellerId: seller.id }),
+      body: JSON.stringify(formattedForm),
     });
 
     if (res.ok) {
@@ -186,6 +195,19 @@ export default function VehicleUploadForm() {
             placeholder="No. of Previous Owners"
             value={form.numberOfOwners}
             onChange={handleChange}
+            className="w-full p-3 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none"
+          />
+
+          <input
+            type="number"
+            name="price"
+            placeholder="Price"
+            value={form.price}
+            onChange={handleChange}
+            onBlur={(e) => {
+              const value = parseFloat(e.target.value || 0).toFixed(2);
+              setForm({ ...form, price: value });
+            }}
             className="w-full p-3 rounded-md bg-darkGrey text-white placeholder:text-gray-400 focus:outline-none"
           />
         </div>
